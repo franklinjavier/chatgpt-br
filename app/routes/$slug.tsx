@@ -2,6 +2,7 @@ import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 
 import { Heading } from '~/components/heading'
+import { MorePosts } from '~/components/more-posts'
 import { Posts } from '~/components/posts'
 import hljs from '~/styles/hljs.css'
 import { getPosts } from '~/utils/posts.server'
@@ -38,11 +39,11 @@ export default function PostSlug() {
   if (!data.post) return <Heading>Oops!</Heading>
 
   return (
-    <article className="markdown-body">
+    <article>
       <h1>{data.post.title}</h1>
       <p dangerouslySetInnerHTML={{ __html: data.post.body }} />
       <hr className="divide-x" />
-      <Posts posts={data.morePosts} />
+      <MorePosts posts={data.morePosts} />
     </article>
   )
 }

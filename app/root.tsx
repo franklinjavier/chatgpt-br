@@ -1,8 +1,9 @@
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
 
+import { Header } from './components/header'
 import styles from './tailwind.css'
 
-import type { MetaFunction } from '@remix-run/node'
+import type { LinksFunction, MetaFunction } from '@remix-run/node'
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -11,8 +12,15 @@ export const meta: MetaFunction = () => ({
   viewport: 'width=device-width,initial-scale=1',
 })
 
-export function links() {
-  return [{ rel: 'stylesheet', href: styles }]
+export const links: LinksFunction = () => {
+  return [
+    { rel: 'stylesheet', href: styles },
+    {
+      rel: 'icon',
+      href: '/logo.png',
+      type: 'image/png',
+    },
+  ]
 }
 
 export function headers() {
@@ -32,7 +40,7 @@ const Document = ({ children }: DocumentProps) => {
         <Meta />
         <Links />
       </head>
-      <body className="prose m-auto bg-white px-4 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 lg:prose-lg">
+      <body className=" bg-white px-4 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -45,8 +53,8 @@ const Document = ({ children }: DocumentProps) => {
 export default function App() {
   return (
     <Document>
-      <header className="mt-3 text-2xl md:!mt-6">ChatGPT-BR</header>
-      <main className="py-10 ">
+      <Header />
+      <main className="prose m-auto py-10">
         <Outlet />
       </main>
     </Document>

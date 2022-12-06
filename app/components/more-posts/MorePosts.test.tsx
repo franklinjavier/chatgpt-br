@@ -1,4 +1,4 @@
-import { Posts } from './Posts'
+import { MorePosts } from './MorePosts'
 import { renderWithRouter, screen } from '~/test-util'
 import type { Post } from '~/utils/posts.server'
 
@@ -8,9 +8,9 @@ const mock = {
   slug: '/foo',
 } as Post
 
-describe('<Posts />', () => {
-  it('should render Posts component', () => {
-    renderWithRouter(<Posts posts={[mock]} />)
+describe('<MorePosts />', () => {
+  it('should render MorePosts component', () => {
+    renderWithRouter(<MorePosts posts={[mock]} />)
     expect(screen.getByText('foo')).toBeInTheDocument()
   })
 })
