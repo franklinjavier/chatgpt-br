@@ -1,11 +1,18 @@
 name: Create Or Update posts
+'on':
+  issues:
+    types:
+      - opened
+      - edited
+      - deleted
+      - labeled
+      - unlabeled
 
-on: issues
 jobs:
-upsert:
-runs-on: ubuntu-latest
-steps:
-  - name: View issue information
-run: |
-echo "Issue title: ${{ github.event.issue.title }}"
-echo "Issue body: ${{ github.event.issue.body }}"
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: View issue information
+        run: |
+        echo "Issue title: '${{ github.event.issue.title }}"'
+        echo "Issue body: '${{ github.event.issue.body }}"'
