@@ -1,8 +1,8 @@
+require('dotenv').config()
 const { createClient } = require('@supabase/supabase-js')
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET)
 
 const [title, body] = process.argv.slice(2)
-
 if (!title || !body) {
   throw new Error('Missing title or body')
 } else {
