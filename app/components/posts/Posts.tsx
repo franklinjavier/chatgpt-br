@@ -18,7 +18,7 @@ export function Posts({ posts }: PostsProps) {
             {post.title}
           </Link>
 
-          <p
+          <div
             className="mt-3 text-xl text-zinc-500 sm:mt-4"
             dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
           />

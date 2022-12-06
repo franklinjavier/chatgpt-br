@@ -1,0 +1,12 @@
+name: Create Or Update posts
+
+on: issues
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: View issue information
+        run: |
+        echo "Issue title: '${{ github.event.issue.title }}"'
+        echo "Issue body: '${{ github.event.issue.body }}"'
