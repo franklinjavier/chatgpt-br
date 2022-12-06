@@ -30,8 +30,6 @@ export async function getPosts() {
       const slug = slugify(rest.title)
       const excerpt = `${body.split('.')[0]}.`
 
-      console.log(rest)
-
       return {
         ...rest,
         image,

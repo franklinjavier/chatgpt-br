@@ -8,8 +8,9 @@ jobs:
     steps:
       - name: View issue information
         run: |
-          echo 'Issue title: "$ISSUE_TITLE"'
-          echo 'Issue body: "$ISSUE_BODY"'
+          node scripts/upsert.js "$ISSUE_TITLE" "$ISSUE_BODY"
         env:
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET: ${{ secrets.SUPABASE_SECRET }}
