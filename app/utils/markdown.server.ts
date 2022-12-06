@@ -6,7 +6,7 @@ export async function markdownToHtml(markdownString: string) {
   const { default: rehypeStringify } = await import('rehype-stringify')
   const { default: hlj } = await import('rehype-highlight')
 
-  const result = await unified()
+  const { value } = await unified()
     .use(markdown)
     .use(remarkGfm)
     .use(remark2rehype)
@@ -14,5 +14,5 @@ export async function markdownToHtml(markdownString: string) {
     .use(hlj)
     .process(markdownString)
 
-  return result.value.toString()
+  return value.toString()
 }

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
 import { Posts } from './Posts'
-import type { Post } from '~/utils/get-posts.server'
+import type { Post } from '~/utils/posts.server'
 
 const mock = {
   title: 'foo',

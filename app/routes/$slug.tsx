@@ -4,7 +4,7 @@ import { useLoaderData } from '@remix-run/react'
 import { Heading } from '~/components/heading'
 import { Posts } from '~/components/posts'
 import hljs from '~/styles/hljs.css'
-import { getAllPosts } from '~/utils/get-posts.server'
+import { getPosts } from '~/utils/posts.server'
 
 import type { LoaderArgs, MetaFunction } from '@remix-run/node'
 
@@ -22,14 +22,8 @@ export const meta: MetaFunction = ({ data, parentsData }) => ({
   description: data?.post?.excerpt ?? parentsData.title,
 })
 
-export function headers() {
-  return {
-    'Cache-Control': `public, max-age=60, stale-while-revalidate=59`,
-  }
-}
-
 export async function loader({ params }: LoaderArgs) {
-  const posts = await getAllPosts()
+  const posts = await getPosts()
   const post = posts.find(({ slug }) => slug === params.slug)
   const morePosts = posts.filter(({ slug }) => slug !== params.slug)
 

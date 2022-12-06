@@ -1,6 +1,6 @@
 import { Link } from '@remix-run/react'
 
-import type { Post } from '~/utils/get-posts.server'
+import type { Post } from '~/utils/posts.server'
 
 type PostsProps = {
   posts: Post[]
