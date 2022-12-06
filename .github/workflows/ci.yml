@@ -33,7 +33,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
-      - name: Lint and Test
-        run: yarn generate:css
-        run: yarn lint:ci
-        run: yarn test
+      - yarn generate:css
+      - yarn lint:ci
+      - yarn test
