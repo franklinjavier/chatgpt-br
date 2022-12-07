@@ -1,25 +1,25 @@
 require('dotenv').config()
 const { createClient } = require('@supabase/supabase-js')
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET)
-const [title, body, issue_id, issue] = process.argv.slice(2)
+const [issue] = process.argv.slice(2)
 
-if (!title || !body || !issue_id) {
-  throw new Error('Missing title, body or issue_id')
-} else {
-  upsert({ title, body, issue_id })
-}
+upsert(issue)
 
-console.log(issue)
-
-async function upsert({ title, body, issue_id }) {
+async function upsert({ title, body, issue_id, labels: _labels }) {
   const slug = slugify(title)
+  const labels = _labels.map((label) => label.name).join(',')
   const { data: post } = await supabase.from('posts').select().eq('issue_id', issue_id)
 
+  const payload = {
+    title,
+    body,
+    slug,
+    issue_id,
+    labels,
+  }
+
   if (post.length) {
-    const updated = await supabase
-      .from('posts')
-      .update({ title, body, slug })
-      .match({ issue_id: post[0].issue_id })
+    const updated = await supabase.from('posts').update(payload).match({ issue_id: post[0].issue_id })
 
     if (updated.error) {
       throw new Error(updated.error.message)
@@ -29,7 +29,7 @@ async function upsert({ title, body, issue_id }) {
     return
   }
 
-  const inserted = await supabase.from('posts').insert({ title, body, slug, issue_id })
+  const inserted = await supabase.from('posts').insert(payload)
 
   if (inserted.error) {
     throw new Error(inserted.error.message)

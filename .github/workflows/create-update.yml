@@ -27,11 +27,8 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: View issue information
-        run: node ./scripts/upsert.js "$ISSUE_TITLE" "$ISSUE_BODY" "$ISSUE_ID" "$GITHUB_CONTEXT"
+        run: node ./scripts/upsert.js "$GITHUB_CONTEXT"
         env:
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_ID: ${{ github.event.issue.id }}
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+          GITHUB_CONTEXT: ${{ toJson(github.event.issue) }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET: ${{ secrets.SUPABASE_SECRET }}
