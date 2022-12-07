@@ -12,7 +12,11 @@ upsert(issue)
 async function upsert({ title, body, id, labels: _labels }) {
   const slug = slugify(title)
   const labels = _labels?.map((label) => label.name).join(',')
-  const { data: post } = await supabase.from('posts').select().eq('issue_id', id)
+  const { data: post, error } = await supabase.from('posts').select().eq('issue_id', id)
+
+  if (error) {
+    throw new Error(error.message)
+  }
 
   const payload = {
     title,
