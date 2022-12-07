@@ -1,16 +1,26 @@
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
+import { json } from '@remix-run/node'
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react'
 
 import { Header } from './components/header'
 import styles from './tailwind.css'
 
-import type { LinksFunction, MetaFunction } from '@remix-run/node'
+import type { LinksFunction, LoaderArgs, MetaFunction } from '@remix-run/node'
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'ChatGPT-BR',
-  description: 'Um blog brasileiro gerado com perguntas e respostas feitas ao OpenAI Chat',
-  viewport: 'width=device-width,initial-scale=1',
-})
+export const meta: MetaFunction = ({ data }) => {
+  const description = data.description
+  const title = data.title
+  return {
+    viewport: 'width=device-width,initial-scale=1',
+    robot: 'index, follow',
+    'og:description': description,
+    'og:title': title,
+    'og:site_name': title,
+    'og:locale': 'pt_BR',
+    'og:url': data.canonical,
+    title,
+    description,
+  }
+}
 
 export const links: LinksFunction = () => {
   return [
@@ -21,6 +31,15 @@ export const links: LinksFunction = () => {
       type: 'image/png',
     },
   ]
+}
+
+export function loader({ request }: LoaderArgs) {
+  const url = new URL(request.url)
+  return json({
+    canonical: `${url.origin}${url.pathname}`,
+    title: 'ChatGPT-BR',
+    description: 'Um blog brasileiro gerado com perguntas e respostas feitas ao OpenAI Chat',
+  })
 }
 
 export function headers() {
@@ -34,11 +53,14 @@ type DocumentProps = {
 }
 
 const Document = ({ children }: DocumentProps) => {
+  const data = useLoaderData<typeof loader>()
+
   return (
     <html lang="pt-br">
       <head>
         <Meta />
         <Links />
+        <link href={data.canonical} rel="canonical" />
       </head>
       <body className=" bg-white px-4 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300">
         {children}

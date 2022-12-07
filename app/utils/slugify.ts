@@ -13,3 +13,7 @@ export function slugify(value: string, delimiter = '-') {
     .replace(/\s+/g, delimiter)
     .replace(/[-]{2,}/g, '')
 }
+
+export function stripTags(value: string) {
+  return value.replace(/<\/?[^>]+(>|$)/gi, '')
+}

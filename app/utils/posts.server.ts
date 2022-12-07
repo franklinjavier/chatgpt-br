@@ -1,6 +1,6 @@
 import { getImageMD, regexMDImage } from './get-image-from-markdown.server'
 import { markdownToHtml } from './markdown.server'
-import { slugify } from './slugify'
+import { slugify, stripTags } from './slugify'
 import { supabase } from './supabase.server'
 
 export type Post = {
@@ -21,7 +21,7 @@ export async function shapePosts(data: Post[]) {
       const body = await markdownToHtml(content.replace(regexMDImage, ''))
       const image = getImageMD(body)
       const slug = slugify(rest.title)
-      const excerpt = `${body.split('.')[0]}.`
+      const excerpt = stripTags(`${body.split('.')[0]}.`)
 
       return {
         ...rest,

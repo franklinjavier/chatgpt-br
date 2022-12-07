@@ -18,10 +18,17 @@ export const links = () => {
   ]
 }
 
-export const meta: MetaFunction = ({ data, parentsData }) => ({
-  title: `${data?.post?.title + ' • '}ChatGPT-BR`,
-  description: data?.post?.excerpt ?? parentsData.title,
-})
+export const meta: MetaFunction = ({ data, parentsData }) => {
+  const description = data?.post?.excerpt ?? parentsData.title
+  const title = `${data?.post?.title + ' • '}ChatGPT-BR`
+  return {
+    title,
+    description,
+    'og:description': description,
+    'og:title': title,
+    'og:site_name': title,
+  }
+}
 
 export async function loader({ params }: LoaderArgs) {
   const posts = await getPosts()
@@ -43,7 +50,7 @@ export default function PostSlug() {
       <h1>{data.post.title}</h1>
       <Labels labels={data.post.labels} />
 
-      <p dangerouslySetInnerHTML={{ __html: data.post.body }} />
+      <div dangerouslySetInnerHTML={{ __html: data.post.body }} />
       <hr className="divide-x" />
       <MorePosts posts={data.morePosts} />
     </article>
