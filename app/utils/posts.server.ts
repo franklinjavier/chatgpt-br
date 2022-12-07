@@ -20,7 +20,8 @@ export type Post = {
 }
 
 export async function getPosts() {
-  const { data } = await supabase.from('posts').select()
+  const { data } = await supabase.from('posts').select().order('created_at', { ascending: false })
+
   const result = data ?? []
 
   const posts = await Promise.all(
