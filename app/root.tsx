@@ -1,8 +1,9 @@
 import { json } from '@remix-run/node'
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react'
 
-import { Header } from './components/header'
 import styles from './tailwind.css'
+import { Analytics } from '~/components/analytics'
+import { Header } from '~/components/header'
 
 import type { LinksFunction, LoaderArgs, MetaFunction } from '@remix-run/node'
 
@@ -68,18 +69,7 @@ const Document = ({ children }: DocumentProps) => {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-        <script src="https://www.googletagmanager.com/gtag/js?id=G-8KH9L5MZKT" async></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-          function gtag(){window?.dataLayer?.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-8KH9L5MZKT');
-          `,
-          }}
-          id="gtag"
-        />
+        <Analytics />
       </body>
     </html>
   )
