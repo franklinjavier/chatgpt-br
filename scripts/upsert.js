@@ -3,18 +3,22 @@ const { createClient } = require('@supabase/supabase-js')
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET)
 const [issue] = process.argv.slice(2)
 
+if (!issue) {
+  throw new Error('Issue not found')
+}
+
 upsert(issue)
 
-async function upsert({ title, body, issue_id, labels: _labels }) {
+async function upsert({ title, body, id, labels: _labels }) {
   const slug = slugify(title)
   const labels = _labels.map((label) => label.name).join(',')
-  const { data: post } = await supabase.from('posts').select().eq('issue_id', issue_id)
+  const { data: post } = await supabase.from('posts').select().eq('issue_id', id)
 
   const payload = {
     title,
     body,
     slug,
-    issue_id,
+    issue_id: id,
     labels,
   }
 
