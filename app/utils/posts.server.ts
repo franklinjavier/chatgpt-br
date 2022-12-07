@@ -11,21 +11,13 @@ export type Post = {
   updated_at: string
   title: string
   id: number
-  labels: [
-    {
-      id: string
-      label: string
-    },
-  ]
+  issue_id: number
+  labels: string
 }
 
-export async function getPosts() {
-  const { data } = await supabase.from('posts').select().order('created_at', { ascending: false })
-
-  const result = data ?? []
-
-  const posts = await Promise.all(
-    result.map(async ({ body: content, ...rest }: Post) => {
+export async function shapePosts(data: Post[]) {
+  return await Promise.all(
+    data?.map(async ({ body: content, ...rest }: Post) => {
       const body = await markdownToHtml(content.replace(regexMDImage, ''))
       const image = getImageMD(body)
       const slug = slugify(rest.title)
@@ -40,6 +32,16 @@ export async function getPosts() {
       }
     }),
   )
+}
 
-  return posts
+export async function getPosts() {
+  const { data } = await supabase.from('posts').select().order('created_at', { ascending: false })
+  const result = data ?? []
+  return shapePosts(result)
+}
+
+export async function getPostsByLabel(label: string) {
+  const { data } = await supabase.from('posts').select().like('labels', `%${label}%`)
+  const result = data ?? []
+  return shapePosts(result)
 }

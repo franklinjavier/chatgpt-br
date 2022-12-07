@@ -2,8 +2,8 @@ import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 
 import { Heading } from '~/components/heading'
+import { Labels } from '~/components/labels'
 import { MorePosts } from '~/components/more-posts'
-import { Posts } from '~/components/posts'
 import hljs from '~/styles/hljs.css'
 import { getPosts } from '~/utils/posts.server'
 
@@ -41,13 +41,11 @@ export default function PostSlug() {
   return (
     <article>
       <h1>{data.post.title}</h1>
+      <Labels labels={data.post.labels} />
+
       <p dangerouslySetInnerHTML={{ __html: data.post.body }} />
       <hr className="divide-x" />
       <MorePosts posts={data.morePosts} />
     </article>
   )
-}
-
-export function CatchBoundary() {
-  return <>Oops</>
 }

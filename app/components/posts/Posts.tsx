@@ -1,5 +1,6 @@
 import { Link } from '@remix-run/react'
 
+import { Labels } from '../labels'
 import type { Post } from '~/utils/posts.server'
 
 type PostsProps = {
@@ -10,7 +11,7 @@ export function Posts({ posts }: PostsProps) {
   return (
     <>
       {posts.map((post: Post) => (
-        <div key={post.slug}>
+        <div className="mb-6" key={post.slug}>
           <Link
             className="text-3xl font-semibold text-zinc-900 decoration-transparent hover:decoration-zinc-700 dark:text-zinc-300"
             to={`/${post.slug}`}
@@ -20,8 +21,10 @@ export function Posts({ posts }: PostsProps) {
 
           <div
             className="mt-3 text-xl text-zinc-500 sm:mt-4"
-            dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
+            dangerouslySetInnerHTML={{ __html: post.excerpt.replace(/<?p>/g, '') ?? '' }}
           />
+
+          <Labels labels={post.labels} />
         </div>
       ))}
     </>
