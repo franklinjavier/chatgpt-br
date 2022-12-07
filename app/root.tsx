@@ -17,6 +17,7 @@ export const meta: MetaFunction = ({ data }) => {
     'og:site_name': title,
     'og:locale': 'pt_BR',
     'og:url': data.canonical,
+    charset: 'utf-8',
     title,
     description,
   }
