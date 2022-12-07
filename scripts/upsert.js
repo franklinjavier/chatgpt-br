@@ -9,10 +9,10 @@ if (!issue) {
 
 upsert(issue)
 
-async function upsert({ title, body, id, labels: _labels }) {
+async function upsert({ title, body, number, labels: _labels }) {
   const slug = slugify(title)
   const labels = _labels?.map((label) => label.name).join(',')
-  const { data: post, error } = await supabase.from('posts').select().eq('issue_id', id)
+  const { data: post, error } = await supabase.from('posts').select().eq('issue_id', number)
 
   if (error) {
     throw new Error(error.message)
@@ -22,12 +22,12 @@ async function upsert({ title, body, id, labels: _labels }) {
     title,
     body,
     slug,
-    issue_id: id,
+    issue_id: number,
     labels,
   }
 
   if (post.length) {
-    const updated = await supabase.from('posts').update(payload).match({ issue_id: post[0].issue_id })
+    const updated = await supabase.from('posts').update(payload).match({ issue_id: number })
 
     if (updated.error) {
       throw new Error(updated.error.message)
