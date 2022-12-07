@@ -1,13 +1,15 @@
 require('dotenv').config()
 const { createClient } = require('@supabase/supabase-js')
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET)
-const [title, body, issue_id] = process.argv.slice(2)
+const [title, body, issue_id, issue] = process.argv.slice(2)
 
 if (!title || !body || !issue_id) {
   throw new Error('Missing title, body or issue_id')
 } else {
   upsert({ title, body, issue_id })
 }
+
+console.log(issue)
 
 async function upsert({ title, body, issue_id }) {
   const slug = slugify(title)
