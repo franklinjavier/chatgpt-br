@@ -12,7 +12,7 @@ if (!title || !body) {
 async function upsert({ title, body }) {
   const { data, error } = await supabase
     .from('posts')
-    .upsert({ title, body, slug: slugify(title) })
+    .upsert({ title, body, slug: slugify(title) }, { onConflict: 'slug' })
     .select()
 
   if (error) {
