@@ -27,7 +27,7 @@ async function upsert({ title, body, issue_id }) {
     return
   }
 
-  const inserted = await supabase.from('posts').insert({ title, body, slug })
+  const inserted = await supabase.from('posts').insert({ title, body, slug, issue_id })
 
   if (inserted.error) {
     throw new Error(inserted.error.message)
