@@ -1,25 +1,39 @@
 require('dotenv').config()
 const { createClient } = require('@supabase/supabase-js')
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET)
+const [title, body, issue_id] = process.argv.slice(2)
 
-const [title, body] = process.argv.slice(2)
-if (!title || !body) {
-  throw new Error('Missing title or body')
+if (!title || !body || !issue_id) {
+  throw new Error('Missing title, body or issue_id')
 } else {
-  upsert({ title, body })
+  upsert({ title, body, issue_id })
 }
 
-async function upsert({ title, body }) {
-  const { data, error } = await supabase
-    .from('posts')
-    .upsert({ title, body, slug: slugify(title) }, { onConflict: 'slug' })
-    .select()
+async function upsert({ title, body, issue_id }) {
+  const slug = slugify(title)
+  const { data: post } = await supabase.from('posts').select().eq('issue_id', issue_id)
 
-  if (error) {
-    throw new Error(error)
+  if (post.length) {
+    const updated = await supabase
+      .from('posts')
+      .update({ title, body, slug })
+      .match({ issue_id: post[0].issue_id })
+
+    if (updated.error) {
+      throw new Error(updated.error.message)
+    }
+
+    console.log(updated.data)
+    return
   }
 
-  console.log(data)
+  const inserted = await supabase.from('posts').insert({ title, body, slug })
+
+  if (inserted.error) {
+    throw new Error(inserted.error.message)
+  }
+
+  console.log(inserted.data)
 }
 
 function slugify(value, delimiter = '-') {
