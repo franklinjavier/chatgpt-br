@@ -7,7 +7,7 @@ if (!issue) {
   throw new Error('Issue not found')
 }
 
-upsert(issue)
+upsert(JSON.parse(issue))
 
 async function upsert({ title, body, number, labels: _labels }) {
   const slug = slugify(title)
