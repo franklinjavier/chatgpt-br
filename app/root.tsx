@@ -1,6 +1,7 @@
 import { json } from '@remix-run/node'
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react'
 
+import { Footer } from './components/footer'
 import styles from './tailwind.css'
 import { Analytics } from '~/components/analytics'
 import { Header } from '~/components/header'
@@ -82,6 +83,7 @@ export default function App() {
       <main className="prose m-auto py-10">
         <Outlet />
       </main>
+      <Footer />
     </Document>
   )
 }
